@@ -1,230 +1,162 @@
 import streamlit as st
-import mysql.connector
-from mysql.connector import Error
-import re
-import time
-from datetime import datetime
 
-# --- PAGE CONFIGURATION ---
-st.set_page_config(
-    page_title="Nexus Auth | Secure Portal",
-    page_icon="🛡️",
-    layout="centered",
-    initial_sidebar_state="collapsed"
+#header.
+st.header("Anurag university Student Records Management")
+#title of the app
+
+st.title("welceome to student records management system")
+#subheader of the app
+st.subheader("Mang student efficiently and effectively")
+
+#text method to display information 
+
+st.text("Hi,I am Harshith gadwala")
+
+#horizontal line
+
+st.markdown("----------------------------")
+
+#write method--allows to write something
+
+st.write("hello Harshith")
+st.write(123456)
+st.write(1,2,3,4,5)
+
+# st.write("name""Harshith","role":"student")
+st.markdown("### this is markdown")
+st.markdown("**Bold text**")
+st.markdown("*Italic*")
+st.markdown("-item 1\n item 2-")
+
+
+
+st.markdown("<h3 style=color:red>RED TEXT </h3>",unsafe_allow_html=True)
+
+
+st.code("""
+        def add(a,b):
+            return a+b
+        """,language='python')
+
+#To create latex describe the math expressions
+st.latex(r''' a^2 + b^2 = c^2 ''')
+
+# Divider method to separate sections
+st.divider()
+#button method to create a button
+if st.button("Click me"):
+  st.write("Button Clicked!")
+  st.success("Operation successful!")
+  st.balloons()
+else:
+  st.write("BUtton not clicked yet.")
+  st.error("connection error!")
+
+#text input method to get user input
+name = st.text_input("Enter your name:")
+
+#show the input if number give a error text
+if name == "":
+  st.warning("Name cannot be empty !"
+             )
+elif not name.isalpha():
+  st.error("Invalid input X Please enter only alphabets (no numbers or symbols).")
+
+else:
+  st.success(f"Hello, {name}!")
+
+# To add some address,comments,description,feadback
+feedback = st.text_area("Enter your feedback")
+
+#To add the chekbox 
+if st.checkbox("I agree to the terms and conditions"):
+  st.write("Thank you from the agreement")
+
+#To add the radio button
+gender = st.radio("Select your gender :",{"Male","Female","Other"})
+st.write(f"You have selected: {gender}")
+
+#To create the select box
+country = st.selectbox("Select your country:",("India","Dubai"))
+st.write(f"You have selected {country}")
+#To select multple options
+skills = st.multiselect(
+  "Select skills",
+  ["Python","SQL","ML",""]
 )
 
-# --- ADVANCED CUSTOM STYLING ---
-st.markdown("""
-    <style>
-    /* Global Styles */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-    
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
+#silder method to create a slider
+age = st.slider("Select your age:",0,100,25)
+st.write(f"You are {age} years old.")
 
-    /* Main Container Glassmorphism */
-    .stApp {
-        background: radial-gradient(circle at top right, #1e293b, #0f172a);
-    }
+#file uploader method to upload files
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+  st.success("File uploaded successfully!")
+else:
+  st.write("No file upload yet.")
 
-    /* Card Styling */
-    .st-emotion-cache-1r6slb0 {
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 2rem;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+#form method to create a form
+with st.form("my_form"):   #To come in single so we use "with"
+  name = st.text_input("Name")
+  age = st.number_input("Age",0,100)
+  submit = st.form_submit_button("Submit")
 
-    /* Button Styling */
-    .stButton > button {
-        width: 100%;
-        border-radius: 12px;
-        height: 3em;
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-        color: white;
-        border: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-        border: none;
-        color: white;
-    }
+  if submit:
+    st.write(name,age)
 
-    /* Metric Styling */
-    [data-testid="stMetricValue"] {
-        font-weight: 800;
-        color: #a855f7;
-    }
+#To create the form submit button inside the for 
 
-    /* Success/Error Animations */
-    @keyframes slideIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .stAlert {
-        animation: slideIn 0.4s ease-out;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+with st.form("login"):
+  user = st.text_input("Username")
+  pwd = st.text_input("password", type="password")
+  submit = st.form_submit_button("Submit")
 
-# --- DATABASE LOGIC (Kept as per your original structure) ---
-DB_HOST, DB_USER, DB_PASSWORD, DB_NAME = "localhost", "root", "H7jai,5ram", "Student_db"
+  if submit:
+    st.write(name,age)
 
-def get_db_connection():
-    try:
-        return mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
-    except Error as e:
-        st.error(f"📡 Database Offline: {e}")
-        return None
+  #To create the column method 
+  col1,col2,col3 = st.columns(3)
+  with col1:
+      st.header("column 1:")
+      st.write("This is column 1")
+  with col2:
+    st.header("column 2:")
+    st.write("This is column 2")
+  with col3:
+    st.header("column 3:")
+    st.write("This is column 3")
+#TO create the container()
+container = st.container()
+container.write("Inside container")
+container.button("Click")
 
-def create_users_table():
-    conn = get_db_connection()
-    if conn:
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255) UNIQUE NOT NULL,
-                email VARCHAR(255) UNIQUE NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        conn.commit()
-        cursor.close()
-        conn.close()
+#table method to display data in tabular format
+data = {
+    'Name': ['Ravi', 'Harshith', 'Rohit'],
+    'Age': [21, 20, 20],
+    'Course': ['M.Tech', 'B.Tech', 'BBA']
+}
+st.table(data)
 
-def register_user(username, email, password, confirm_password):
-    if not username or not email or not password:
-        st.warning("⚠️ All fields are required.")
-        return False
-    if password != confirm_password:
-        st.warning("⚠️ Passwords do not match.")
-        return False
-    
-    try:
-        conn = get_db_connection()
-        if conn:
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (username, email, password))
-            conn.commit()
-            return True
-    except Error as e:
-        st.error(f"❌ Account creation failed: {e}")
-    return False
+#sidebar method to create 
+st.sidebar.title("Menu")
+option = st.sidebar.selectbox(
+"Choose page",
+["Home", "About", "Contact"]
+)
+st.sidebar.write(f"You selected: {option}")
 
-def login_user(username, password):
-    try:
-        conn = get_db_connection()
-        if conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT username FROM users WHERE username = %s AND password = %s", (username, password))
-            result = cursor.fetchone()
-            return True if result else False
-    except Error: return False
+#To create the success()
+#To create error
+#to create warning
+#to create info
 
-# --- UI COMPONENTS ---
-def main():
-    create_users_table()
-    
-    if 'logged_in' not in st.session_state: st.session_state.logged_in = False
-    if 'page' not in st.session_state: st.session_state.page = "home"
+#To create cache_data
+@st.cache_data
+def load_data():
+  return [1, 2, 3, 4]
+data = load_data()
+st.write(data)
 
-    # --- AUTHENTICATED VIEW ---
-    if st.session_state.logged_in:
-        # Sidebar Stats
-        with st.sidebar:
-            st.markdown("### 🛠️ Nexus Control")
-            st.caption(f"Logged in as: **{st.session_state.username}**")
-            if st.button("🚪 Sign Out"):
-                st.session_state.logged_in = False
-                st.rerun()
-
-        # Top Navigation Bar (Attractive Buttons)
-        tabs = st.columns(4)
-        pages = ["Home", "Profile", "Dashboard", "Settings"]
-        icons = ["🏠", "👤", "📊", "⚙️"]
-        
-        for i, col in enumerate(tabs):
-            if col.button(f"{icons[i]} {pages[i]}", key=f"nav_{pages[i]}"):
-                st.session_state.page = pages[i].lower()
-
-        st.markdown("---")
-
-        # Page Logic
-        if st.session_state.page == "home":
-            st.markdown(f"## Welcome back, <span style='color:#a855f7'>{st.session_state.username}</span>! 👋", unsafe_allow_html=True)
-            
-            # Action Cards
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                st.info("**Learning Hub**\n\nContinue your courses where you left off.")
-            with c2:
-                st.success("**Project Alpha**\n\nYour recent project is 80% complete.")
-            with c3:
-                st.warning("**Updates**\n\n3 new security patches available.")
-                
-            st.markdown("### 📈 Quick Metrics")
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Points", "1,250", "+120")
-            m2.metric("Rank", "#4", "↑ 1")
-            m3.metric("Level", "15", "Active")
-            m4.metric("Tasks", "12", "-2")
-
-        elif st.session_state.page == "dashboard":
-            st.markdown("## 📊 Performance Analytics")
-            st.line_chart({"Activity": [10, 25, 40, 35, 50, 70, 90]})
-            st.bar_chart({"Data": [20, 30, 15, 45, 10]})
-
-        # (Other pages follow same structure...)
-
-    # --- LOGIN / REGISTER VIEW ---
-    else:
-        col1, col2, col3 = st.columns([1, 4, 1])
-        with col2:
-            st.markdown("""
-                <div style='text-align: center; margin-bottom: 2rem;'>
-                    <h1 style='font-size: 3rem; background: -webkit-linear-gradient(#6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>
-                        NEXUS AUTH
-                    </h1>
-                    <p style='color: #94a3b8;'>Secure entry to your student workspace</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-            mode = st.tabs(["🔒 Secure Login", "📝 Create Account"])
-            
-            with mode[0]:
-                with st.container():
-                    user = st.text_input("Username", key="login_user")
-                    pw = st.text_input("Password", type="password", key="login_pw")
-                    if st.button("Access Dashboard"):
-                        if login_user(user, pw):
-                            st.session_state.logged_in = True
-                            st.session_state.username = user
-                            st.success("Access Granted!")
-                            time.sleep(0.5)
-                            st.rerun()
-                        else:
-                            st.error("Invalid Credentials")
-
-            with mode[1]:
-                new_user = st.text_input("Username", key="reg_user")
-                new_email = st.text_input("Email Address", key="reg_email")
-                new_pw = st.text_input("Password", type="password", key="reg_pw")
-                conf_pw = st.text_input("Confirm Password", type="password", key="reg_conf")
-                if st.button("Initialize Account"):
-                    if register_user(new_user, new_email, new_pw, conf_pw):
-                        st.success("Account created! Please login.")
-    
-    # Simple Footer
-    st.markdown("<br><br><div style='text-align:center; color:#64748b; font-size: 0.8rem;'>Nexus Secure v2.0 • 2026</div>", unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    main()
+# create a registraction form(first,last,register button,successfull message) check in datqa base and  put it in login form (if matches)
